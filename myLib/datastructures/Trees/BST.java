@@ -1,10 +1,5 @@
 package myLib.datastructures.Trees;
-
 import myLib.datastructures.nodes.TNode;
-import java.util.Stack;
-import java.util.LinkedList;
-import java.util.Queue;
-
 
 public class BST {
     //node class that defines BST
@@ -12,20 +7,17 @@ public class BST {
 
     //Initial empty tree
     public BST(){
-        root = null;
+        setRoot(null);
     }
     public BST(int val){
-        root = new TNode(val, 0, null, null, null);
+        TNode node = new TNode(val, 0, null, null, null);
+        setRoot(node);
     }
     public BST(TNode obj){
-        this.root = obj;
+        setRoot(obj);
     }
-    public void setBST(TNode val){
-        this.root = val;
-    }
-    public TNode getBST(){
-        return this.root;
-    }
+    public void setRoot(TNode val) {this.root = val; }
+    public TNode getRoot(){ return root; }
     public TNode Insert(int val){
         //Need to make use of the balance.
         TNode insertNode = new TNode(val, 0, null, null, null);
@@ -107,7 +99,7 @@ public class BST {
     public TNode Search(int val) {
         TNode current = root;
 
-        // Find the node with the data to delete
+        //Looking for node
         while (current != null && current.getData() != val) {
             if (val < current.getData()) {
                 current = current.getLeft();
@@ -116,62 +108,79 @@ public class BST {
             }
         }
 
-        // If node with the data to delete is not found
+        //If node can not be found
         if (current == null) {
+            System.out.println("null");
             return null;
         }
         return current;
     }
 
     public void printInOrder() {
-        Stack<TNode> s = new Stack<TNode>();
-        TNode current = root;
+        if (root == null) {
+            System.out.println("Tree is Empty");
+        } else {
+            TNode current = root;
 
-        while (current != null || s.size() > 0) {
-            // Traverse down the leftmost node and push all the nodes
-            // on the way to the stack
             while (current != null) {
-                s.push(current);
-                current = current.getLeft();
-            }
+                if (current.getLeft() == null) {
+                    System.out.print(current.getData() + " ");
+                    current = current.getRight();
+                } else {
+                    TNode pre = current.getLeft();
+                    while (pre.getRight() != null && pre.getRight() != current) {
+                        pre = pre.getRight();
+                    }
 
-            // Pop a node from the stack, print its data, and set the
-            // current node to its right child
-            current = s.pop();
-            System.out.print(current.getData() + " ");
-            current = current.getRight();
+                    if (pre.getRight() == null) {
+                        pre.setRight(current);
+                        current = current.getLeft();
+                    } else {
+                        pre.setRight(null);
+                        System.out.print(current.getData() + " ");
+                        current = current.getRight();
+                    }
+                }
+            }
         }
     }
 
     public void printBF() {
-        Queue<TNode> queue = new LinkedList<TNode>();
-        queue.add(root);
+        if (root == null) {
+            System.out.println("Tree is Empty");
+        } else {
+            DynamicArray<TNode> queue = new DynamicArray<TNode>();
+            queue.append(root);
 
-        while (!queue.isEmpty()) {
-            int levelSize = queue.size();
+            int currentIndex = 0;
+            int currentLevelSize = 1;
 
-            // Print all the nodes at the current level and add their
-            // children to the queue
-            for (int i = 0; i < levelSize; i++) {
-                TNode current = queue.poll();
-                System.out.print(current.getData() + " ");
+            while (currentIndex < queue.getSize()) {
+                // Print all the nodes at the current level and add their
+                // children to the queue
+                for (int i = 0; i < currentLevelSize; i++) {
+                    TNode current = queue.get(currentIndex);
+                    System.out.print(current.getData() + " ");
 
-                if (current.getLeft() != null) {
-                    queue.add(current.getLeft());
+                    if (current.getLeft() != null) {
+                        queue.append(current.getLeft());
+                    }
+                    if (current.getRight() != null) {
+                        queue.append(current.getRight());
+                    }
+
+                    currentIndex++;
                 }
-                if (current.getRight() != null) {
-                    queue.add(current.getRight());
-                }
+
+                // Print a newline character to start the next level on a new line
+                System.out.println();
+                currentLevelSize = queue.getSize() - currentIndex;
             }
-
-            // Print a newline character to start the next level on a new line
-            System.out.println();
         }
     }
 
 
-
-    public boolean Delete(int val) {
+    public TNode Delete(int val) {
         TNode current = root;
         TNode parent = null;
         boolean isLeftChild = true;
@@ -190,8 +199,8 @@ public class BST {
 
         // If node with the data to delete is not found
         if (current == null) {
-            //System.out.println("Node with data " + val + " not found in the tree.");
-            return false;
+            System.out.println(val + " is not found in the tree.");
+            return null;
         }
 
         // Case 1: Node to be deleted has no children
@@ -241,7 +250,7 @@ public class BST {
             successor.setLeft(current.getLeft());
         }
 
-        return true;
+        return root;
     }
 
     //Added helper function for Delete(int val)
@@ -261,6 +270,22 @@ public class BST {
 
 
     public static void main(String args[]){
+        System.out.println("=== Testing BST() default constructor === \n");
+        BST treeV1 = new BST();
+        System.out.println("Checking root, expected: null, actual: " + treeV1.getRoot() + "\n");
+        System.out.println("=== Testing BST(int val) overload constructor === \n");
+        BST treeV2 = new BST(5);
+        System.out.println("Checking root, expected data value: 5, actual: " + treeV2.getRoot().getData() + "\n");
+        System.out.println("=== Testing BST(TNode obj) overload constructor and printBF() === \n");
+        TNode nodeV3 = new TNode(7, 0, null, null, null);
+        BST treeV3 = new BST(nodeV3);
+        treeV3.printBF();
+        TNode nodeV4 = new TNode(11, 0, null, null, null);
+        nodeV4.setRight(nodeV3);
+        BST treeV4 = new BST(nodeV4);
+        System.out.println("\n=== Testing BST(TNode obj) overload constructor with obj having children === \n");
+        treeV4.printBF();
+
         /*
         should have structure - testing Insert(int val)
                 6
@@ -279,25 +304,28 @@ public class BST {
         TNode node4 = Tree.Insert(5);
         TNode node5 = Tree.Insert(4);
 
+
+        System.out.println("\n=== Testing Insert(int val) === \n");
+        Tree.printBF();
+
+        System.out.println("\n=== Connection can be further tested by checking each node parent ===\n");
         node1.print();
-        System.out.println("TreeNode: " + node1);
-        System.out.println("");
+        System.out.println("TreeNode: " + node1 + "\n");
         node2.print();
-        System.out.println("TreeNode: " + node2);
-        System.out.println("");
+        System.out.println("TreeNode: " + node2 + "\n");
         node3.print();
-        System.out.println("TreeNode: " + node3);
-        System.out.println("");
+        System.out.println("TreeNode: " + node3 + "\n");
         node4.print();
-        System.out.println("TreeNode: " + node4);
-        System.out.println("");
+        System.out.println("TreeNode: " + node4 + "\n");
         node5.print();
-        System.out.println("TreeNode: " + node5);
-        System.out.println("");
-        System.out.println("=============Testing Insert(TNode obj)=============");
-        System.out.println("");
+        System.out.println("TreeNode: " + node5 + "\n");
 
+        System.out.println("=== Testing Insert(int val) case where val already exists ===\n");
+        Tree.Insert(6);
+        System.out.println("There should still be one 6 even if it was inserted twice");
+        Tree.printBF();
 
+        System.out.println("\n=== Testing Insert(TNode obj) case where obj has no children ===\n");
          /*
         should have structure - testing Insert(TNode obj)
                 6
@@ -320,27 +348,86 @@ public class BST {
         Tree0.Insert(nodes4);
         TNode nodes5 = new TNode(4, 0, null, null, null);
         Tree0.Insert(nodes5);
-
+        Tree0.printBF();
+        System.out.println("\n=== Connection can be further tested by checking each node parent ===\n");
         nodes1.print();
-        System.out.println("TreeNode: " + nodes1);
-        System.out.println("");
+        System.out.println("TreeNode: " + nodes1 + "\n");
         nodes2.print();
-        System.out.println("TreeNode: " + nodes2);
-        System.out.println("");
+        System.out.println("TreeNode: " + nodes2 + "\n");
         nodes3.print();
-        System.out.println("TreeNode: " + nodes3);
-        System.out.println("");
+        System.out.println("TreeNode: " + nodes3 + "\n");
         nodes4.print();
-        System.out.println("TreeNode: " + nodes4);
-        System.out.println("");
+        System.out.println("TreeNode: " + nodes4 + "\n");
         nodes5.print();
-        System.out.println("TreeNode: " + nodes5);
-        System.out.println("");
-        System.out.println("=============Testing Delete(int val)============= for 4");
-        System.out.println("");
+        System.out.println("TreeNode: " + nodes5 + "\n");
+
+        System.out.println("=== Testing Insert(TNode obj) case where obj has children ===\n");
+        /*
+        should have current structure
+                6
+               /
+              2
+             / \
+            1   5
+               /
+              4
+
+        TNode obj is
+                8
+               / \
+              0  11
+
+        Should have this result:
+                 6
+               /   \
+              2      8
+             / \    / \
+            1   5  0  11
+               /
+              4
+
+        */
+        BST Tree1 = new BST();
+        TNode node01 = Tree1.Insert(6);
+        TNode node02 = Tree1.Insert(2);
+        TNode node03 = Tree1.Insert(1);
+        TNode node04 = Tree1.Insert(5);
+        TNode node05 = Tree1.Insert(4);
+
+        BST subTree = new BST();
+        TNode node11 = subTree.Insert(8);
+        TNode node12 = subTree.Insert(11);
+        TNode node13 = subTree.Insert(0);
+        Tree1.Insert(node11);
+        Tree1.printBF();
+
+        System.out.println("\n=== Connection can be further tested by checking each node parent ===\n");
+        node01.print();
+        System.out.println("TreeNode: " + node01 + "\n");
+        node02.print();
+        System.out.println("TreeNode: " + node02 + "\n");
+        node03.print();
+        System.out.println("TreeNode: " + node03 + "\n");
+        node04.print();
+        System.out.println("TreeNode: " + node04 + "\n");
+        node05.print();
+        System.out.println("TreeNode: " + node05 + "\n");
+        node11.print();
+        System.out.println("TreeNode: " + node11 + "\n");
+        node12.print();
+        System.out.println("TreeNode: " + node12 + "\n");
+        node13.print();
+        System.out.println("TreeNode: " + node13 + "\n");
+
+        System.out.println("=== Testing Insert(TNode obj) case where obj has data that already exists ===\n");
+        Tree1.Insert(node11);
+        System.out.println("There should still be one 8 even if it was inserted twice");
+        Tree1.printBF();
+
+
+        System.out.println("\n=== Testing Delete(int val) for 4 ===\n");
 
         /*
-        deleting value 4 for Tree ---NEED TO FIX TESTS FOR DELETE
         should have structure - testing Delete(int val)
                 6
                /
@@ -350,25 +437,10 @@ public class BST {
 
          */
         Tree.Delete(4);
-        node1.print();
-        System.out.println("TreeNode: " + node1);
-        System.out.println("");
-        node2.print();
-        System.out.println("TreeNode: " + node2);
-        System.out.println("");
-        node3.print();
-        System.out.println("TreeNode: " + node3);
-        System.out.println("");
-        node4.print();
-        System.out.println("TreeNode: " + node4);
-        System.out.println("");
-        node5.print();
-        System.out.println("TreeNode: " + node5);
-        System.out.println("");
-        System.out.println("=============Testing Delete(int val)============= for 2");
-        System.out.println("");
+        Tree.printBF();
+
+        System.out.println("\n===Testing Delete(int val) for 2 ===\n");
         /*
-        deleting value 2 for Tree
         should have structure - testing Delete(int val)
                  6
                 /
@@ -378,93 +450,75 @@ public class BST {
 
         */
         Tree.Delete(2);
-        node1.print();
-        System.out.println("TreeNode: " + node1); //6
-        System.out.println("");
-        node2.print();
-        System.out.println("TreeNode: " + node2); //2
-        System.out.println("");
-        node3.print();
-        System.out.println("TreeNode: " + node3); //1
-        System.out.println("");
-        node4.print();
-        System.out.println("TreeNode: " + node4); //5
-        System.out.println("");
-        node5.print();
-        System.out.println("TreeNode: " + node5); //4
-        System.out.println("");
-
+        Tree.printBF();
+        System.out.println("\n===Testing Delete(int val) if value doesn't exist ===\n");
         Tree.Delete(0);
+        System.out.println("\n===Testing Delete(int val) for entire Tree. Output should be Tree is Empty ===\n");
+        Tree.Delete(6);
+        Tree.Delete(1);
+        Tree.Delete(5);
+        Tree.printBF();
 
-        System.out.println("");
-        System.out.println("=============Testing Search(int val)============= for 2");
-        System.out.println("");
+        System.out.println("\n=== Testing Search(int val) for 2 in the second tree ===\n");
         TNode searchNode = Tree0.Search(2);
         searchNode.print(); //check if node data is correct with tree01 - should have two children
-        System.out.println("Tree node: " + searchNode); //should give output myLib.datastructures.nodes.TNode@a09ee92
-        System.out.println("");
 
-        TNode searchNode1 = Tree0.Search(0); //test value that does not exist
-        searchNode.print();
-        System.out.println("Tree node: " + searchNode); //should give no output ie null
-        System.out.println("");
-        System.out.println("=============Testing printInOrder()=============");
-        System.out.println("");
-        Tree0.printInOrder(); //output should be 1 2 4 5 6
-        System.out.println("");
-        Tree.printInOrder(); //output should be 1 5 6 due to value 2 and 4 being deleted
-        System.out.println("");
-        System.out.println("=============Testing printBF()=============");
-        System.out.println("");
+        System.out.println("\n=== Testing Search(int val) if value does not exist ===\n");
+        TNode searchNode1 = Tree0.Search(0);
+
+        System.out.println("\n=== Testing printInOrder() ===\n");
+        Tree0.printInOrder();
+        System.out.println("\n");
+        Tree.printInOrder();
+        System.out.println();
+        System.out.println("\n=== Testing printBF() for both trees ===\n");
         Tree0.printBF();
         System.out.println();
         Tree.printBF();
-        System.out.println("");
-        System.out.println("=============Testing Sub tree insertion with Insert(TNode obj)=============");
-        System.out.println("");
-        /*
-        should have structure - testing Insert(int val)
-                6
-               /
-              2
-             / \
-            1   5
-               /
-              4
+    }
+}
+class DynamicArray<T> {
+    private int size;
+    private T[] arr;
 
-         */
-        BST Tree1 = new BST();
-        TNode node01 = Tree1.Insert(6);
-        TNode node02 = Tree1.Insert(2);
-        TNode node03 = Tree1.Insert(1);
-        TNode node04 = Tree1.Insert(5);
-        TNode node05 = Tree1.Insert(4);
-         /*
-        should have structure - testing Insert(int val)
-                8
-               / \
-              0  11
+    public DynamicArray() {
+        size = 0;
+        arr = (T[]) new Object[1];
+    }
 
+    public int getSize() {
+        return size;
+    }
 
-         */
-        BST subTree = new BST();
-        TNode node11 = subTree.Insert(8);
-        TNode node16 = subTree.Insert(11);
-        TNode node12 = subTree.Insert(0);
-        subTree.printBF();
-        Tree1.Insert(node11);
-        Tree1.printBF();
-        /*
-        Should have this result:
-                 6
-               /   \
-              2      8
-             / \    / \
-            1   5  0  11
-               /
-              4
-         */
+    public T get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds.");
+        }
+        return arr[index];
+    }
 
+    public void set(int index, T value) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds.");
+        }
+        arr[index] = value;
+    }
+
+    public void append(T value) {
+        if (size == arr.length) {
+            resize(2 * arr.length);
+        }
+        arr[size] = value;
+        size++;
+    }
+
+    private void resize(int capacity) {
+        T[] copy = (T[]) new Object[capacity];
+        for (int i = 0; i < size; i++) {
+            copy[i] = arr[i];
+        }
+        arr = copy;
     }
 
 }
+
