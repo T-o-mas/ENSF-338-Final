@@ -1,4 +1,4 @@
-package myLib.datastructures.Trees;
+package myLib.datastructures.trees;
 
 import myLib.datastructures.nodes.TNode;
 
