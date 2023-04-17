@@ -219,6 +219,9 @@ public class AVL extends BST{
         System.out.println("=== Testing AVL(TNode obj) overload constructor and printBF() === \n");
         TNode nodeV3 = new TNode(7, 0, null, null, null);
         AVL treeV3 = new AVL(nodeV3);
+        System.out.println("Expected:");
+        System.out.println("7");
+        System.out.println("Actual:");
         treeV3.printBF();
         TNode nodeV4 = new TNode(11, 0, null, null, null);
         nodeV4.setRight(nodeV3);
@@ -238,10 +241,7 @@ public class AVL extends BST{
             1   4  6  12
          */
         AVL Tree = new AVL();
-/*      TNode node1 = Tree.Insert(12);
-        TNode node2 = Tree.Insert(15);
-        TNode node3 = Tree.Insert(19);
-        */
+
         TNode node1 = Tree.Insert(6);
         TNode node2 = Tree.Insert(2);
         TNode node3 = Tree.Insert(1);
@@ -252,18 +252,26 @@ public class AVL extends BST{
 
 
         System.out.println("\n=== Testing Insert(int val) === \n");
+        System.out.println("Expected:");
+        System.out.println("5\n2 11\n1 4 6 12");
+        System.out.println("Actual:");
         Tree.printBF();
 
         AVL Tree1 = new AVL(12);
         TNode node8 = Tree1.Insert(5);
         TNode node9 = Tree1.Insert(2);
 
-        System.out.println("=== Testing Insert(int val) case where val already exists ===\n");
+        System.out.println("\n=== Testing Insert(int val) case where val already exists ===\n");
         Tree.Insert(6);
-        System.out.println("There should still be one 6 even if it was inserted twice");
+        System.out.println("Expected:");
+        System.out.println("5\n2 11\n1 4 6 12");
+        System.out.println("Actual:");
         Tree.printBF();
 
         System.out.println("\n=== Testing LL Rotation === \n");
+        System.out.println("Expected:");
+        System.out.println("5\n2 12");
+        System.out.println("Actual:");
         Tree1.printBF();
 
         AVL Tree2 = new AVL();
@@ -271,6 +279,9 @@ public class AVL extends BST{
         TNode node11 = Tree2.Insert(15);
         TNode node12 = Tree2.Insert(19);
         System.out.println("\n=== Testing RR Rotation === \n");
+        System.out.println("Expected:");
+        System.out.println("15\n12 19");
+        System.out.println("Actual:");
         Tree2.printBF();
 
         AVL Tree3 = new AVL();
@@ -278,6 +289,9 @@ public class AVL extends BST{
         TNode node14 = Tree3.Insert(11);
         TNode node15 = Tree3.Insert(12);
         System.out.println("\n=== Testing LR Rotation === \n");
+        System.out.println("Expected:");
+        System.out.println("12\n11 13");
+        System.out.println("Actual:");
         Tree3.printBF();
 
         AVL Tree4 = new AVL();
@@ -285,6 +299,9 @@ public class AVL extends BST{
         TNode node17 = Tree4.Insert(15);
         TNode node18 = Tree4.Insert(13);
         System.out.println("\n=== Testing RL Rotation === \n");
+        System.out.println("Expected:");
+        System.out.println("13\n12 15");
+        System.out.println("Actual:");
         Tree4.printBF();
 
         System.out.println("\n=== Testing Insert(TNode obj) case where obj has no children ===\n");
@@ -299,9 +316,15 @@ public class AVL extends BST{
         Tree0.Insert(nodes4);
         TNode nodes5 = new TNode(4, 0, null, null, null);
         Tree0.Insert(nodes5);
+        System.out.println("Expected:");
+        System.out.println("2\n1 5\n4 6");
+        System.out.println("Actual:");
         Tree0.printBF();
 
         System.out.println("\n === Testing Insert(TNode obj) case where obj has children ===\n");
+        System.out.println("Expected:");
+        System.out.println("6\n2 8\n1 5 0 11\n4");
+        System.out.println("Actual:");
         AVL Tree5 = new AVL();
         TNode node01 = Tree5.Insert(6);
         TNode node02 = Tree5.Insert(2);
@@ -318,7 +341,9 @@ public class AVL extends BST{
 
         System.out.println("\n === Testing Insert(TNode obj) case where obj has data that already exists ===\n");
         Tree5.Insert(node21);
-        System.out.println("There should still be one 8 even if it was inserted twice");
+        System.out.println("Expected:");
+        System.out.println("6\n2 8\n1 5 0 11\n4");
+        System.out.println("Actual:");
         Tree5.printBF();
 
         System.out.println("\n=== Testing Delete(int val) for 4 ===\n");
@@ -331,12 +356,21 @@ public class AVL extends BST{
             1   4 6   12
          */
         Tree.Delete(4);
+        System.out.println("Expected:");
+        System.out.println("5\n2 11\n1 6 12");
+        System.out.println("Actual:");
         Tree.printBF();
 
         System.out.println("\n===Testing Delete(int val) for 2 ===\n");
         Tree.Delete(2);
+        System.out.println("Expected:");
+        System.out.println("5\n1 11\n6 12");
+        System.out.println("Actual:");
         Tree.printBF();
         System.out.println("\n===Testing Delete(int val) if value doesn't exist ===\n");
+        System.out.println("Expected:");
+        System.out.println("null\n0 is not found in the tree");
+        System.out.println("Actual:");
         Tree.Delete(0);
         System.out.println("\n===Testing Delete(int val) for entire Tree. Output should be Tree is Empty ===\n");
         Tree.Delete(6);
@@ -346,19 +380,28 @@ public class AVL extends BST{
         Tree.Delete(12);
         Tree.printBF();
 
-        System.out.println("\n=== Testing Search(int val) for 2 in the second tree ===\n");
+        System.out.println("\n=== Testing Search(int val) for 2 in the second tree. Should return a node with data 2===\n");
         TNode searchNode = Tree0.Search(2);
         searchNode.print(); //check if node data is correct with tree01 - should have two children
 
         System.out.println("\n=== Testing Search(int val) if value does not exist ===\n");
+        System.out.println("Expected:");
+        System.out.println("null");
+        System.out.println("Actual:");
         TNode searchNode1 = Tree0.Search(0);
 
         System.out.println("\n=== Testing printInOrder() ===\n");
+        System.out.println("Expected:");
+        System.out.println("1 2 4 5 6\n\nTree is Empty");
+        System.out.println("Actual:");
         Tree0.printInOrder();
         System.out.println("\n");
         Tree.printInOrder();
         System.out.println();
         System.out.println("\n=== Testing printBF() for both trees ===\n");
+        System.out.println("Expected:");
+        System.out.println("2\n1 5\n4 6\n\nTree is Empty");
+        System.out.println("Actual:");
         Tree0.printBF();
         System.out.println();
         Tree.printBF();

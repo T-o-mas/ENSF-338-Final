@@ -1,4 +1,5 @@
 package myLib.datastructures.Trees;
+
 import myLib.datastructures.nodes.TNode;
 
 public class BST {
@@ -279,6 +280,9 @@ public class BST {
         System.out.println("=== Testing BST(TNode obj) overload constructor and printBF() === \n");
         TNode nodeV3 = new TNode(7, 0, null, null, null);
         BST treeV3 = new BST(nodeV3);
+        System.out.println("Expected:");
+        System.out.println("7");
+        System.out.println("Actual:");
         treeV3.printBF();
         TNode nodeV4 = new TNode(11, 0, null, null, null);
         nodeV4.setRight(nodeV3);
@@ -306,6 +310,9 @@ public class BST {
 
 
         System.out.println("\n=== Testing Insert(int val) === \n");
+        System.out.println("Expected:");
+        System.out.println("6\n2\n1 5\n4");
+        System.out.println("Actual:");
         Tree.printBF();
 
         System.out.println("\n=== Connection can be further tested by checking each node parent ===\n");
@@ -321,8 +328,10 @@ public class BST {
         System.out.println("TreeNode: " + node5 + "\n");
 
         System.out.println("=== Testing Insert(int val) case where val already exists ===\n");
+        System.out.println("Expected:");
+        System.out.println("6\n2\n1 5\n4");
+        System.out.println("Actual:");
         Tree.Insert(6);
-        System.out.println("There should still be one 6 even if it was inserted twice");
         Tree.printBF();
 
         System.out.println("\n=== Testing Insert(TNode obj) case where obj has no children ===\n");
@@ -348,6 +357,9 @@ public class BST {
         Tree0.Insert(nodes4);
         TNode nodes5 = new TNode(4, 0, null, null, null);
         Tree0.Insert(nodes5);
+        System.out.println("Expected:");
+        System.out.println("6\n2\n1 5\n4");
+        System.out.println("Actual:");
         Tree0.printBF();
         System.out.println("\n=== Connection can be further tested by checking each node parent ===\n");
         nodes1.print();
@@ -399,6 +411,9 @@ public class BST {
         TNode node12 = subTree.Insert(11);
         TNode node13 = subTree.Insert(0);
         Tree1.Insert(node11);
+        System.out.println("Expected:");
+        System.out.println("6\n2 8\n1 5 0 11\n4");
+        System.out.println("Actual:");
         Tree1.printBF();
 
         System.out.println("\n=== Connection can be further tested by checking each node parent ===\n");
@@ -421,7 +436,9 @@ public class BST {
 
         System.out.println("=== Testing Insert(TNode obj) case where obj has data that already exists ===\n");
         Tree1.Insert(node11);
-        System.out.println("There should still be one 8 even if it was inserted twice");
+        System.out.println("Expected:");
+        System.out.println("6\n2 8\n1 5 0 11\n4");
+        System.out.println("Actual:");
         Tree1.printBF();
 
 
@@ -437,6 +454,9 @@ public class BST {
 
          */
         Tree.Delete(4);
+        System.out.println("Expected:");
+        System.out.println("6\n2\n1 5");
+        System.out.println("Actual:");
         Tree.printBF();
 
         System.out.println("\n===Testing Delete(int val) for 2 ===\n");
@@ -450,28 +470,47 @@ public class BST {
 
         */
         Tree.Delete(2);
+        System.out.println("Expected:");
+        System.out.println("6\n1\n5");
+        System.out.println("Actual:");
         Tree.printBF();
         System.out.println("\n===Testing Delete(int val) if value doesn't exist ===\n");
+        System.out.println("Expected:");
+        System.out.println("0 is not found in the tree");
+        System.out.println("Actual:");
         Tree.Delete(0);
         System.out.println("\n===Testing Delete(int val) for entire Tree. Output should be Tree is Empty ===\n");
         Tree.Delete(6);
         Tree.Delete(1);
         Tree.Delete(5);
+        System.out.println("Expected:");
+        System.out.println("Tree is Empty");
+        System.out.println("Actual:");
         Tree.printBF();
 
-        System.out.println("\n=== Testing Search(int val) for 2 in the second tree ===\n");
+        System.out.println("\n=== Testing Search(int val) for 2 in the second tree should return a node with data 2 ===\n");
         TNode searchNode = Tree0.Search(2);
         searchNode.print(); //check if node data is correct with tree01 - should have two children
 
         System.out.println("\n=== Testing Search(int val) if value does not exist ===\n");
+        System.out.println("Expected:");
+        System.out.println("null");
+        System.out.println("Actual:");
         TNode searchNode1 = Tree0.Search(0);
 
         System.out.println("\n=== Testing printInOrder() ===\n");
+        System.out.println("Expected:");
+        System.out.println("1 2 4 5 6\n\nTree is Empty");
+        System.out.println("Actual:");
         Tree0.printInOrder();
         System.out.println("\n");
         Tree.printInOrder();
         System.out.println();
         System.out.println("\n=== Testing printBF() for both trees ===\n");
+        System.out.println("Expected:");
+        System.out.println("6\n2\n1 5\n4\n\nTree is Empty");
+        System.out.println("Actual:");
+
         Tree0.printBF();
         System.out.println();
         Tree.printBF();
