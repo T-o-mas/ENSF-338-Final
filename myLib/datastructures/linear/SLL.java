@@ -152,15 +152,12 @@ public class SLL {
         SNode current = this.head;
 
         while (current != null) {
-            System.out.println("Start while (current != null)");
             SNode next = current.getNextNode();
             if (sortedList == null || current.getData() < sortedList.getData()) {
-                System.out.println("sortedList is null, or instantly correct");
                 current.setNextNode(sortedList);
                 sortedList = current;
             } 
             else {
-                System.out.println("going else statement");
                 SNode temp = sortedList;
                 while (temp.getNextNode() != null && current.getData() > temp.getNextNode().getData()) {
 
